@@ -1,0 +1,37 @@
+sudo: required
+dist: xenial
+
+env:
+  global:
+    - KUBEVIRT_VER=v0.8.0
+
+jobs:
+  include:
+    - name: "minikube (1.10)"
+      env: CPLATFORM=minikube CDIST=kubernetes CVER=1.10.7
+
+cache:
+  directories:
+  - cache
+  - "~/.minishift/cache"
+  - "~/.minikube/cache"
+
+before_script:
+## FIXME Workaround for https://github.com/kubernetes/kubernetes/issues/61058
+### And https://github.com/LiliC/travis-minikube/blob/e0f26f7b388057f51a0e2558afd5f990e07b6c49/.travis.yml#L11
+- sudo mount --make-rshared /
+
+# install socat (required for helm)
+- sudo apt-get -qq update && sudo apt-get install -y socat
+
+# install helm
+- curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
+- chmod 700 get_helm.sh && ./get_helm.sh
+
+- bash -x ci/prepare-host $CPLATFORM $CVER
+- bash -x ci/prepare-host virtctl $KUBEVIRT_VER
+- bash -x ci/start-cluster $CPLATFORM $CVER
+- bash -x ci/deploy-kubevirt $CDIST $KUBEVIRT_VER
+
+script:
+- timeout 5m bash -x ./test/run.sh

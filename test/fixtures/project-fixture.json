@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "name": "brigade-6e35bd4c52f9e015cfe3308c2b19eba59990e1019beb499eadee67",
+    "creationTimestamp": null,
+    "labels": {
+      "app": "brigade",
+      "component": "project",
+      "heritage": "brigade"
+    },
+    "annotations": {
+      "projectName": "blimmer/brigade-project-integration-test"
+    }
+  },
+  "stringData": {
+    "allowHostMounts": "false",
+    "allowPrivilegedJobs": "false",
+    "buildStorageSize": "50Mi",
+    "cloneURL": "https://github.com/deis/empty-testbed.git",
+    "defaultScript": "",
+    "defaultScriptName": "",
+    "github.baseURL": "",
+    "github.token": "",
+    "github.uploadURL": "",
+    "imagePullSecrets": "",
+    "initGitSubmodules": "false",
+    "kubernetes.buildStorageClass": "",
+    "kubernetes.cacheStorageClass": "",
+    "namespace": "default",
+    "repository": "github.com/deis/empty-testbed",
+    "secrets": "{}",
+    "sharedSecret": "ThisIsNotARealSecret!",
+    "sshKey": "",
+    "vcsSidecar": "deis/git-sidecar:latest",
+    "worker.name": "",
+    "worker.pullPolicy": "IfNotPresent",
+    "worker.registry": "",
+    "worker.tag": "",
+    "workerCommand": "yarn -s start"
+  },
+  "type": "brigade.sh/project"
+}
