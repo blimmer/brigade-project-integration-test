@@ -3,6 +3,7 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BRIG_LOCATION="$SCRIPT_DIR"/../bin/brig
+BRIG_VERSION="v0.18.0"
 FIXTURE_PROJECT_NAME=blimmer/brigade-project-integration-test
 
 check_helm() {
@@ -25,22 +26,19 @@ install_brigade() {
 }
 
 install_brig_cli_tool() {
-  local brig_s3
+  local brig_github_release
 
-  # We're using 0.18-prerelease because most tests will likely rely on
-  # knowing the exit code from a `brig run`, implemented in this PR:
-  # https://github.com/Azure/brigade/pull/415
   case `uname` in
     'Linux')
-      brig_s3='https://s3.amazonaws.com/oss-pkg.ibotta.com/brig/0.18-prerelease/brig-linux-amd64'
+      brig_github_release="https://github.com/Azure/brigade/releases/download/$BRIG_VERSION/brig-linux-amd64"
       ;;
     'Darwin')
-      brig_s3='https://s3.amazonaws.com/oss-pkg.ibotta.com/brig/0.18-prerelease/brig-darwin-amd64'
+      brig_github_release="https://github.com/Azure/brigade/releases/download/$BRIG_VERSION/brig-darwin-amd64"
       ;;
   esac
 
   if [ ! -f "$BRIG_LOCATION" ]; then
-    curl "$brig_s3"  > "$BRIG_LOCATION"
+    curl -f -Lo "$BRIG_LOCATION" "$brig_github_release"
     chmod +x "$BRIG_LOCATION"
   fi
 }
