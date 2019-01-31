@@ -21,8 +21,16 @@ instance of the project and run real-world scenarios to verify behavior.
 To run tests, execute:
 
 ```console
-./test/run
+./test/run.sh
 ```
+
+Optionally, non-default values for `brigade.js` file location and project fixture can be provided:
+
+```console
+BRIGADE_JS=./path/to/brigade.js FIXTURE_PROJECT_NAME=my/test-fixture ./test/run.sh
+```
+
+If supplying your own `FIXTURE_PROJECT_NAME`, ensure it already exists before running tests.
 
 This script sets up a local minikube with the test project to execute tests
 against. These tests also run in

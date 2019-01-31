@@ -4,7 +4,8 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BRIG_LOCATION="$SCRIPT_DIR"/../bin/brig
 BRIG_VERSION="v0.18.0"
-FIXTURE_PROJECT_NAME=blimmer/brigade-project-integration-test
+DEFAULT_PROJECT_FIXTURE="blimmer/brigade-project-integration-test"
+FIXTURE_PROJECT_NAME="${FIXTURE_PROJECT_NAME:-${DEFAULT_PROJECT_FIXTURE}}"
 
 check_helm() {
   if ! command -v helm; then
@@ -18,7 +19,7 @@ init_helm() {
 }
 
 install_brigade() {
-  helm repo add brigade https://azure.github.io/brigade
+  helm repo add brigade https://azure.github.io/brigade 
 
   if ! helm status brigade; then
     helm install -n brigade brigade/brigade --set rbac.enabled=true
@@ -45,7 +46,12 @@ install_brig_cli_tool() {
 
 setup_project() {
   if ! $BRIG_LOCATION project get $FIXTURE_PROJECT_NAME; then
-     $BRIG_LOCATION project create -x -f "$SCRIPT_DIR"/../fixtures/project-fixture.json
+    if [[ "${FIXTURE_PROJECT_NAME}" == "${DEFAULT_PROJECT_FIXTURE}" ]]; then
+      $BRIG_LOCATION project create -x -f "$SCRIPT_DIR"/../fixtures/project-fixture.json
+    else
+      echo "Project '${FIXTURE_PROJECT_NAME}' not known to Brigade. Please create before running tests."
+      exit 1
+    fi
   fi
 }
 
