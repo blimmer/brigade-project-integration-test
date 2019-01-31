@@ -7,7 +7,9 @@ load "$BATS_TEST_DIRNAME/libs/bats-assert/load.bash"
 
 # Globals
 GIT_DIR="$BATS_TEST_DIRNAME/.."
-BRIG_RUN="$BATS_TEST_DIRNAME/bin/brig run -f $GIT_DIR/brigade.js blimmer/brigade-project-integration-test"
+BRIGADE_JS="${BRIGADE_JS:-$GIT_DIR/brigade.js}"
+FIXTURE_PROJECT_NAME="${FIXTURE_PROJECT_NAME:-blimmer/brigade-project-integration-test}"
+BRIG_RUN="$BATS_TEST_DIRNAME/bin/brig run -f $BRIGADE_JS $FIXTURE_PROJECT_NAME"
 
 # Begin Tests
 
