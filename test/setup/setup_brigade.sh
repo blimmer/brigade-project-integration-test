@@ -3,7 +3,7 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BRIG_LOCATION="$SCRIPT_DIR"/../bin/brig
-BRIG_VERSION="v0.18.0"
+BRIG_VERSION="v0.20.0"
 FIXTURE_PROJECT_NAME=blimmer/brigade-project-integration-test
 
 check_helm() {
@@ -18,7 +18,7 @@ init_helm() {
 }
 
 install_brigade() {
-  helm repo add brigade https://azure.github.io/brigade
+  helm repo add brigade https://azure.github.io/brigade-charts
 
   if ! helm status brigade; then
     helm install -n brigade brigade/brigade --set rbac.enabled=true
